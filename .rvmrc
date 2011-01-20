@@ -1,1 +1,1 @@
-rvm use ruby19@candelabra --create
+rvm use 1.8.7@candelabra --create
