@@ -1,20 +1,15 @@
-require 'pty'
-
 module Candelabra
   module_function
-
-  def pid
-    /^(\d*)pianobar/ =~ system( 'ps | grep pianobar' )
-    puts $1
-    $1.to_i unless $1.nil?
-  end
+  attr_accessor :pid
 
   def start
-    Process.detach fork{ `pianobar` }
+    @pid = fork { `pianobar` }
+    Process.detach @pid
   end
 
   def stop
-    Process.kill('HUP', pid)
+    Process.kill('HUP', @pid)
+    Process.wait(@pid)
   end
 
 end
