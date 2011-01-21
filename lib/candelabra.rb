@@ -1,19 +1,15 @@
-require 'pty'
-
 module Candelabra
   module_function
 
-  def pid
-    /\d*/ =~ `ps -C pianobar`
-    $1
-  end
-
   def start
-    `nohup pianobar &`
+    @pid = fork do
+      exec("pianobar")
+    end
   end
 
   def stop
-    Process.kill('HUP', pid)
+    Process.kill('HUP', @pid)
+    Process.wait(@pid)
   end
 
 end

@@ -7,16 +7,22 @@ describe Candelabra do
 
   describe 'the process' do
     before(:each) do
-      Candelabra.start
+      @pid = Candelabra.start
+    end
+    
+    # Had to do this, because the first test starts a pianobar that never quits.
+    # Comment out all but stop test if you're paranoid.
+    after(:each) do
+      `killall pianobar`
     end
 
     it 'should start pianobar' do
-      `ps -p #{Candelabra.pid}`.must_match /pianobar/
+      `ps -p #{@pid}`.must_match /pianobar/
     end
 
     it 'should stop pianobar' do
       Candelabra.stop
-      `ps -p #{Candelabra.pid}`.wont_match /pianobar/
+      `ps -p #{@pid}`.wont_match /pianobar/
     end
   end
 end
