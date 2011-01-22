@@ -1,3 +1,3 @@
 module Candelabra
-  VERSION = "rockon"
+  VERSION = "0.0.1"
 end
