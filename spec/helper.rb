@@ -7,3 +7,11 @@ $LOAD_PATH.unshift(File.join(File.dirname(__FILE__), '..', 'lib'))
 $LOAD_PATH.unshift(File.dirname(__FILE__))
 
 require 'candelabra'
+
+def clean_up
+  begin
+    yield
+  ensure
+    `killall pianobar`
+  end
+end
