@@ -16,6 +16,18 @@ module Candelabra
   module Install
     module_function
 
+    # Checking to determine if pianobar is installed it is just looking
+    # for the executable.
+    #
+    # Example:
+    #   Candelabra::Install.pianobar?
+    #     # => true if pianobar is in the path
+    #
+    # Returns true when pianobar is installed
+    def pianobar?
+      !%x[which pianobar].empty?
+    end
+
     # Simple check to determine if home brew is installed
     #
     # Example:
@@ -36,7 +48,7 @@ module Candelabra
     #   Candelabra::Install.brew_path
     #     # => /usr/local/bin/brew
     def brew_path
-      `which brew`.chomp
+      %x[which brew].chomp
     end
   end
 end
