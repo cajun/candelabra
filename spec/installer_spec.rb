@@ -10,6 +10,26 @@ describe Candelabra::Installer do
   describe 'without pinaobar installed' do
   end
 
+  describe 'with the remote control file for pianobar setup' do
+    it 'should know if the control file is setup' do
+      Candelabra::Installer.ctl?.must_equal true
+    end
+
+    it 'should know the path of the control file' do
+      Candelabra::Installer.ctl_path.must_match /\/\.config\/pianobar\/ctl$/
+    end
+  end
+
+  describe 'without the remote control file for pianobar setup' do
+    it 'should know if the control file is setup' do
+      Candelabra::Installer.ctl?.must_equal true
+    end
+
+    it 'should know the path of the control file' do
+      Candelabra::Installer.ctl_path.must_match /\/\.config\/pianobar\/ctl$/
+    end
+  end
+
   describe 'OSX' do
     describe 'with brew installed' do
       it 'should be able to detect the os' do

@@ -19,8 +19,8 @@ module Candelabra
     extend OSX
     extend Ubuntu
 
-    # Checking to determine if pianobar is installed it is just looking
-    # for the executable.
+    # Checking to determine  if pianobar is installed  it is just
+    # looking for the executable.
     #
     # Example:
     #   Candelabra::Install.pianobar?
@@ -44,5 +44,20 @@ module Candelabra
       %x[which pianobar]
     end
 
+    # Pianobar can talk  to a remote file. This  will determin if
+    # the file is setup.
+    #
+    # Returns true when setup in the expected location
+    def ctl?
+      test 'p', ctl_path
+    end
+
+    # The path of the control file. This file must be a fifo file
+    # inorder for it to be the correct ctl file.
+    #
+    # Returns the path to the control file
+    def ctl_path
+      "#{ENV['HOME']}/.config/pianobar/ctl"
+    end
   end
 end
