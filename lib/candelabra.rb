@@ -3,6 +3,11 @@
   require lib
 end
 
+# NOTE: These must be first.
+dir = File.dirname(__FILE__)
+require "#{dir}/candelabra/osx.rb"
+require "#{dir}/candelabra/ubuntu.rb"
+
 # Requiring all of the files in the lib dir. kinda cool ( i guess
 # ). This  way we don't  have to worry  about loading any  of the
 # files by hand.

@@ -10,11 +10,14 @@ module Candelabra
   # version correct
   #
   # For Example:
-  #   Candelabra::Install.pianobar
+  #   Candelabra::Installer.install 'pianobar'
   #     # => brew install pianobar
   #     # => sudo apt-get install pianobar
-  module Install
+  module Installer
     module_function
+
+    extend OSX
+    extend Ubuntu
 
     # Checking to determine if pianobar is installed it is just looking
     # for the executable.
@@ -25,30 +28,21 @@ module Candelabra
     #
     # Returns true when pianobar is installed
     def pianobar?
-      !%x[which pianobar].empty?
+      !pianobar_path.empty?
     end
 
-    # Simple check to determine if home brew is installed
+    # Gets the path to pianobar.  If it's installed on the system
+    # and in your  path it will be located. This  path is what is
+    # used to determine if pianobar needs to be installed
     #
     # Example:
-    #   Candelabra::Install.has_brew?
-    #     # => On osx it should be true
-    #     # => On ubuntu it should be false
+    #   Candelabra::Installer.pianobar_path
+    #     # => /usr/local/bin/pianobar
     #
-    # Returns true if home brew is there
-    def has_brew?
-      !brew_path.nil?
+    # Returns a string
+    def pianobar_path
+      %x[which pianobar]
     end
 
-    # Gets the path of home brew.  If it's somewere on your system
-    # this finds it.  Candelabra assumes that you don't use sudo
-    # to install the brew packages
-    #
-    # Example:
-    #   Candelabra::Install.brew_path
-    #     # => /usr/local/bin/brew
-    def brew_path
-      %x[which brew].chomp
-    end
   end
 end
