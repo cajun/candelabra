@@ -15,3 +15,9 @@ def clean_up
     `killall pianobar`
   end
 end
+
+def pid_as_expression
+  exp = ''
+  Process.pid.to_s.each_char{ |c| exp += "[^#{c}]" }
+  exp
+end
