@@ -71,7 +71,7 @@ module Candelabra
     #
     # Returns nothing. but it makes the logs dir
     def make_logs
-      Dir.mkdir( 'logs' ) unless test( 'd', 'logs' )
+      Dir.mkdir( 'logs' ) unless test ?d, 'logs'
     end
   end
 end

@@ -2,6 +2,7 @@ require 'rubygems'
 require 'bundler/setup'
 require 'minitest/autorun'
 require 'minitest/spec'
+require 'minitest/pride'
 
 $LOAD_PATH.unshift(File.join(File.dirname(__FILE__), '..', 'lib'))
 $LOAD_PATH.unshift(File.dirname(__FILE__))
@@ -14,10 +15,4 @@ def clean_up
   ensure
     `killall pianobar`
   end
-end
-
-def pid_as_expression
-  exp = ''
-  Process.pid.to_s.each_char{ |c| exp += "[^#{c}]" }
-  exp
 end

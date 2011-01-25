@@ -49,7 +49,7 @@ module Candelabra
     #
     # Returns true when setup in the expected location
     def ctl?
-      test 'p', ctl_path
+      test ?p, ctl_path
     end
 
     # The path of the control file. This file must be a fifo file

@@ -50,20 +50,20 @@ module Candelabra
 
     # Load the installer methods IF this is the correct OS
     def self.extended klass
-      klass.extend( InstanceMethods ) if osx?
+      klass.extend( InstanceMethods ) if linux?
     end
 
     # This method will say if the OS is Ubuntu or not
     #
     # Example:
-    #   [ On Ubuntu ] osx?
+    #   [ On Ubuntu ] linux?
     #     # => true
     #
-    #   [ On OSX ] osx?
+    #   [ On OSX ] linux?
     #     # => false
     #
     # Returns true for Ubuntu
-    def self.osx?
+    def self.linux?
       /linux/ =~ RbConfig::CONFIG["target_os"]
     end
   end
