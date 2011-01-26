@@ -6,29 +6,12 @@ PATH
 GEM
   remote: http://rubygems.org/
   specs:
-    ParseTree (3.0.5)
-      RubyInline (>= 3.7.0)
-      sexp_processor (>= 3.0.0)
-    RubyInline (3.7.0)
-      hoe (>= 1.5.3)
-    hoe (2.8.0)
-      rake (>= 0.8.7)
     minitest (2.0.2)
-    rake (0.8.7)
-    ruby_parser (2.0.4)
-      sexp_processor (~> 3.0)
-    sexp_processor (3.0.4)
-    tomdoc (0.1.0)
-      ParseTree (= 3.0.5)
-      RubyInline (= 3.7.0)
-      ruby_parser (= 2.0.4)
-      sexp_processor (= 3.0.4)
 
 PLATFORMS
   ruby
 
 DEPENDENCIES
-  bundler (>= 1.0.0)
+  bundler (~> 1.0.0)
   candelabra!
   minitest (>= 2.0.2)
-  tomdoc (= 0.1.0)

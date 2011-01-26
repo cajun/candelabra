@@ -1,13 +1,13 @@
 module Candelabra
-  # The  Process  module  of   Candelabra  handles  starting  and
+  # The  Pianobar  module  of  Candelabra  handles  starting  and
   # stopping of pianobar. The module  will contain the PID of the
   # process.  It will  also be  able  to kill  of the  pianobar's
   # running on the system
   #
   # For  Example:
-  #   Candelabra::Process.start
+  #   Candelabra::Pianobar.start
   #     # => pianobar has started
-  module Process
+  module Pianobar
     #  Give me  super  powers and  the ability  to  call all  the
     # methods in this file.
     module_function
@@ -25,7 +25,7 @@ module Candelabra
     # logs/out.log in the gem folder.
     #
     # Example:
-    #   Candelabra::Process.start
+    #   Candelabra::Pianobar.start
     #     # => gives you the process ID
     #
     # Returns the process ID a.k.a pid
@@ -40,7 +40,7 @@ module Candelabra
     # a PID then this will send the kill command to that process
     #
     # Example:
-    #   Candelabra::Process.stop
+    #   Candelabra::Pianobar.stop
     #     # => pianobar is done for
     #
     # Returns nothing
@@ -54,7 +54,7 @@ module Candelabra
     # rouge pianobars and stuff
     #
     # Example:
-    #   Candelabra::Process.stop_all
+    #   Candelabra::Pianobar.stop_all
     #     # => and they are all dead
     #
     # Returns nothing useful
@@ -66,12 +66,12 @@ module Candelabra
     # has been created.
     #
     # Example:
-    #   Candelabra::Process.make_logs
+    #   Candelabra::Pianobar.make_logs
     #     # => doesn't really belong here
     #
     # Returns nothing. but it makes the logs dir
     def make_logs
-      Dir.mkdir( 'logs' ) unless test( 'd', 'logs' )
+      Dir.mkdir( 'logs' ) unless test ?d, 'logs'
     end
   end
 end
