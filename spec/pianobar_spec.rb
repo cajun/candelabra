@@ -39,4 +39,18 @@ describe Candelabra::Pianobar do
     end
   end
 
+  describe 'checking the running process' do
+    it 'should know when pianobar is running' do
+      clean_up do
+        Candelabra::Pianobar.start
+        Candelabra::Pianobar.running?.must_equal true
+      end
+    end
+
+    it 'should know when pianobar is not running' do
+      Candelabra::Pianobar.stop_all
+      Candelabra::Pianobar.running?.must_equal false
+    end
+  end
+
 end

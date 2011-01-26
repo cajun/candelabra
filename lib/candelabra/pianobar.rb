@@ -17,7 +17,12 @@ module Candelabra
     #
     # Returns int or nil
     def pid
-      @pid
+      @pid ||= `ps -a | grep pianobar`.split(' ').first
+    end
+
+
+    def running?
+      !pid.nil?
     end
 
     # Start the  pianobar. ( bet  you couldn't have  guessed that
@@ -45,7 +50,8 @@ module Candelabra
     #
     # Returns nothing
     def stop
-      ::Process.kill('HUP', @pid)
+      ::Process.kill('HUP', pid)
+      @pid = nil
     end
 
     # When killing  one pianobar  is not  enough. Kill  them all.
@@ -60,6 +66,7 @@ module Candelabra
     # Returns nothing useful
     def stop_all
       `killall pianobar`
+      @pid = nil
     end
 
     # Util method. Should be moved  to the install module when it

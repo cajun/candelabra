@@ -16,3 +16,10 @@ def clean_up
     `killall pianobar`
   end
 end
+
+def ctl_file
+  # TODO: clear out the file before we start using it
+  File.open( Candelabra::Installer.ctl_path, ( File::RDONLY | File::NONBLOCK ) ) do |file|
+    yield( file )
+  end
+end
