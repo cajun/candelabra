@@ -1,6 +1,8 @@
 require 'helper'
 
 describe Candelabra::Pianobar do
+  after( :each ) { Candelabra::Pianobar.stop_all }
+
   describe 'starting the process' do
     it 'should start pianobar and find it by the pid' do
       clean_up do

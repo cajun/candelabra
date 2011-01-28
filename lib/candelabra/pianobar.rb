@@ -65,7 +65,7 @@ module Candelabra
     #
     # Returns nothing useful
     def stop_all
-      `killall pianobar`
+      %s[killall pianobar]
       @pid = nil
     end
 
