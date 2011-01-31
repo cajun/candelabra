@@ -17,7 +17,18 @@ module Candelabra
     #
     # Returns int or nil
     def pid
-      @pid ||= `ps -a | grep pianobar`.split(' ').first
+      # On OS X grep will grep itself
+      #
+      # $ ps -a | grep pianobar
+      # 32473 ttys000    0:20.66 pianobar
+      # 32647 ttys003    0:00.00 grep pianobar
+      # 
+      # This will return a pid even if pianobar is not running.
+      # There is a simple fix however.
+      # 
+      # $ ps -a | grep pianobar$
+      # 32473 ttys000    0:20.93 pianobar
+      @pid ||= `ps -a | grep pianobar$`.split(' ').first
     end
 
 
