@@ -2,21 +2,24 @@ module Candelabra
   class Configuration
     include Singleton
 
-    attr_accessor :auto_restart , :event_handler
+    attr_accessor :auto_restart, :event_handler
     attr_writer :on_song_start, :on_song_finish, :on_error
 
     class << self
+      # Initilize the configuration
       def go
-        set_defaults
+        clear
         yield self.instance
       end
 
-      def set_defaults
-        config = self.instance
-        config.auto_restart = true
+      # Clear out the old settings in the configuration
+      def clear
+        auto_restart, event_handler = nil,nil
+        @on_song_start, @on_song_finish, @on_error = nil,nil,nil
       end
     end
 
+    # Check to determine if the hander has been set yet or not
     def handler?
       !event_handler.nil?
     end

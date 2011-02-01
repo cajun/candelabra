@@ -16,7 +16,7 @@ def clean_up
   ensure
     # NOTE: this give a message  in the console stating you don't
     # own this process.  The test seem to work just fine.
-    %x[ killall pianobar ]
+    %x[killall pianobar]
   end
 end
 
