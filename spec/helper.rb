@@ -1,5 +1,6 @@
 require 'rubygems'
 require 'bundler/setup'
+require 'ostruct'
 require 'minitest/autorun'
 require 'minitest/spec'
 require 'minitest/pride'
@@ -13,7 +14,9 @@ def clean_up
   begin
     yield
   ensure
-    `killall pianobar`
+    # NOTE: this give a message  in the console stating you don't
+    # own this process.  The test seem to work just fine.
+    %x[ killall pianobar ]
   end
 end
 
