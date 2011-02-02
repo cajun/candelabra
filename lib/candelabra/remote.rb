@@ -9,7 +9,7 @@ module Candelabra
     # user
     #
     # Returns hash of commands and key
-    def commands 
+    def commands
       {
         :pause          => 'p',
         :continue       => 'p',
