@@ -1,5 +1,5 @@
 # Pulling in all the libs we need to get the job done
-%w(shell singleton).each do |lib|
+%w(shell singleton optparse).each do |lib|
   require lib
 end
 
