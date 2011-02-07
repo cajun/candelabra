@@ -17,10 +17,14 @@ module Candelabra
     #
     # Returns int or nil
     def pid
-      @pid ||= `ps -a | grep pianobar`.split(' ').first
+      return @pid unless @pid.nil?
+      @pid = %x[ps -a | grep pianobar$].split(' ').first
+      @pid = @pid.to_i unless @pid.nil?
     end
 
-
+    # Check to determine if pianobar is running anywhere on the system
+    #
+    # Returns true or false
     def running?
       !pid.nil?
     end
@@ -65,7 +69,7 @@ module Candelabra
     #
     # Returns nothing useful
     def stop_all
-      %s[killall pianobar]
+      %x[killall pianobar]
       @pid = nil
     end
 
