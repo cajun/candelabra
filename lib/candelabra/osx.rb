@@ -52,6 +52,11 @@ module Candelabra
       klass.extend( InstanceMethods ) if osx?
     end
 
+    # Load the installer methods IF this is the correct OS
+    def self.included klass
+      klass.send( :include, InstanceMethods ) if osx?
+    end
+
     # This method will say if the OS is OSX or not
     #
     # Example:

@@ -46,11 +46,21 @@ module Candelabra
       def has_installer?
         !installer_path.nil?
       end
+
+
+      def notify
+        `notify-send "Pianobar - #{stationName}" "Now Playing: #{ artist } - #{ title }"`
+      end
     end
 
     # Load the installer methods IF this is the correct OS
     def self.extended klass
       klass.extend( InstanceMethods ) if linux?
+    end
+
+    # Load the installer methods IF this is the correct OS
+    def self.included klass
+      klass.send( :include, InstanceMethods ) if linux?
     end
 
     # This method will say if the OS is Ubuntu or not
@@ -68,3 +78,12 @@ module Candelabra
     end
   end
 end
+
+
+__END__
+notify-send "Pianobar - $stationName" "Now Playing: $artist - $title"
+if [ "$pRet" -ne 1 ]; then
+notify-send "Pianobar - ERROR" "$1 failed: $pRetStr"
+elif [ "$wRet" -ne 1 ]; then
+notify-send "Pianobar - ERROR" "$1 failed: $wRetStr"
+fi
