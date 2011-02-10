@@ -3,7 +3,7 @@ module Candelabra
     include OSX
     include Ubuntu
 
-    attr_reader :command, :artist, :title, :album, :station_name
+    attr_reader :command, :artist, :title, :album, :stationName
 
     def initialize(args)
       @command = args.shift

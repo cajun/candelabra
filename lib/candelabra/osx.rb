@@ -45,6 +45,12 @@ module Candelabra
       def has_installer?
         !installer_path.nil?
       end
+
+      # Notify the user using growl
+      def notify
+        %x[growlnotify -t "Pianobar - #{stationName}" -m "Now Playing: #{artist} - #{title}"]
+      end
+
     end
 
     # Load the installer methods IF this is the correct OS
