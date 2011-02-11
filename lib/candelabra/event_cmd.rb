@@ -26,6 +26,14 @@ module Candelabra
       end
     end
 
+    def art_work
+      if coverArt
+        Dir.glob('*.jpg').each { |imge| File.delete(imge) }
+        File.open( 'img.jpg', 'wb' ) { |f| f.write Net::HTTP.get( URI.parse( coverArt ) ) }
+        Dir.glob('*.jpg').first
+      end
+    end
+
     
   end
 end
