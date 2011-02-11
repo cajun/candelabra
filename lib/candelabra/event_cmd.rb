@@ -19,13 +19,10 @@ module Candelabra
     end
     
     def parse(data)
-      File.open( 'tmp/output', 'w+') do |f|
-        data.each do |key_value|
-          f.write key_value
-          key, value = key_value.chomp.split('=')
-          key = key
-          instance_variable_set( "@#{key}".to_sym, value )
-        end
+      data.each do |key_value|
+        key, value = key_value.chomp.split('=')
+        key = key
+        instance_variable_set( "@#{key}".to_sym, value )
       end
     end
 

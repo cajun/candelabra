@@ -56,7 +56,10 @@ module Candelabra
 
       # Notify the user using growl
       def notify
+        `wget #{coverArt}`
+        img = Dir.glob('*.jpg')
         %x[growlnotify -t "Pianobar - #{stationName}" -m "Now Playing: #{artist} - #{title}"]
+        File.delete img.first
       end
 
     end
