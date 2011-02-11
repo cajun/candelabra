@@ -56,7 +56,10 @@ module Candelabra
       end
 
       def notify
-        `notify-send "Pianobar - #{stationName}" "Now Playing: #{ artist } - #{ title }"`
+        `wget #{coverArt}`
+        img = Dir.glob('*.jpg')
+        `notify-send -i #{File.realpath(img.first)} "Pianobar - #{stationName}" "Now Playing: #{ artist } - #{ title }"`
+        File.delete img.first
       end
     end
 
