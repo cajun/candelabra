@@ -47,6 +47,13 @@ module Candelabra
         !installer_path.nil?
       end
 
+      def os
+        'Ubuntu\Linux'
+      end
+
+      def notify?
+        !%x[which notify-send].chomp.nil?
+      end
 
       def notify
         `notify-send "Pianobar - #{stationName}" "Now Playing: #{ artist } - #{ title }"`

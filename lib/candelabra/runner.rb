@@ -76,6 +76,8 @@ module Candelabra
         Candelabra::Pianobar.stop
       when 'restart'
         Candelabra::Pianobar.restart
+      when 'install'
+        Candelabra::Installer.run
       when 'event'
         # NOTE: this is mainly for debugging
         puts "On Song Start: #{ config.on_song_start }" if options['on_song_start']

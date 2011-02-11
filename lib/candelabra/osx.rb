@@ -46,6 +46,14 @@ module Candelabra
         !installer_path.nil?
       end
 
+      def os
+        'OSX'
+      end
+
+      def notify?
+        !%x[which growlnotify].chomp.nil?
+      end
+
       # Notify the user using growl
       def notify
         %x[growlnotify -t "Pianobar - #{stationName}" -m "Now Playing: #{artist} - #{title}"]

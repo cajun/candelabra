@@ -19,6 +19,32 @@ module Candelabra
     extend OSX
     extend Ubuntu
 
+    # Executing the installing process.
+    def run
+      header
+      what_is_installed?
+    end
+
+    def header
+      puts ""
+      puts " Installing Candelabra Version #{Candelabra::VERSION} ".center(80,'*')
+      puts ""
+    end
+
+    # Display what is installed to the user
+    #
+    # Return if all is ok to install
+    def what_is_installed?
+      puts " => Detecting OS".ljust(70,'.') + os.color(:green)
+      puts " => Detecting Package Manager".ljust(70,'.') + ( has_installer? ? 'Yes'.color(:green) : 'No'.color(:red) )
+      puts " => Detecting Pianobar".ljust(70,'.') + ( pianobar? ? 'Yes'.color(:green) : 'No'.color(:red) )
+      puts " => Detecting Control File".ljust(70,'.') + ( ctl? ? 'Yes'.color(:green) : 'No'.color(:red) )
+      puts " => Detecting Notifyer".ljust(70,'.') + ( notify? ? 'Yes'.color(:green) : 'No'.color(:red) )
+
+      puts "   => Ok to install".ljust(70,'.') + ( has_installer? ? 'Yes'.color(:green) : 'No'.color(:red) )
+      has_installer?
+    end
+
     # Checking to determine  if pianobar is installed  it is just
     # looking for the executable.
     #
