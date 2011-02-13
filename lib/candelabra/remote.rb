@@ -68,8 +68,15 @@ module Candelabra
       end
     end
 
-    # Change the station
-    # If no argument is given then the list of stations will be given
+    # When changing stations the user needs to get the list of stations.  
+    #
+    # Example:
+    #   Candelabra::Remote.change_station
+    #     # => [ list of stations ]
+    #   Candelabra::Remote.change_station 6
+    #     # => go to the 6th station
+    #
+    # Returns list of stations _or_ changes the station to the requested station
     def change_station( station_number = nil )
       if station_number.nil?
         read_stations
@@ -89,7 +96,7 @@ module Candelabra
       output do |io|
         io.lines.each do |line|
           /(\[\?\])/ =~ line
-          break if $1 == '[?]'
+          break if $1 == '[?]' # this denotes the use input for which station to change to
           stations << $1 if /(#{stations.size}\).+)/ =~ line
         end
       end
@@ -98,12 +105,13 @@ module Candelabra
 
     # The out put file for the commands
     # This contains all the output from pianobar
+    #
+    # Yields and IO reader for pianobar's output
     def output
       File.open( Candelabra::Installer.output_path, 'r+' ) do |io|
         yield( io )
       end
     end
-
 
   end
 end
