@@ -68,30 +68,40 @@ module Candelabra
       end
     end
 
+    # Change the station
+    # If no argument is given then the list of stations will be given
     def change_station( station_number = nil )
-      execute_command( :change_station )
       if station_number.nil?
         read_stations
       else
+        execute_command( :change_station )
         execute_command( "s" + station_number.to_s ) unless station_number.nil?
       end
     end
 
+    # Get a list of stations from the system
+    # read the station list from the command line
+    #
+    # Returns an array of stations
     def read_stations
       stations = [] 
-      io.lines.each do |line|
-        /(\[\?\])/ =~ line
-        break if $1 == '[?]'
-        stations << $1 if /(#{stations.size}\).+)/ =~ line
+      execute_command( :change_station )
+      output do |io|
+        io.lines.each do |line|
+          /(\[\?\])/ =~ line
+          break if $1 == '[?]'
+          stations << $1 if /(#{stations.size}\).+)/ =~ line
+        end
       end
       stations
     end
 
-    def io
-      return @io unless @io.nil?
-      @io = File.open( Candelabra::Installer.output_path, 'r+' )
-      @io.autoclose = true
-      @io
+    # The out put file for the commands
+    # This contains all the output from pianobar
+    def output
+      File.open( Candelabra::Installer.output_path, 'r+' ) do |io|
+        yield( io )
+      end
     end
 
 
