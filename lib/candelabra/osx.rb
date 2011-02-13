@@ -18,7 +18,7 @@ module Candelabra
       #
       # Returns standard output from home brew
       def install lib
-        %x[brew install #{lib}] if has_brew?
+        %x[brew install #{lib}] if has_installer?
       end
 
       # Gets  the path  of home  brew. If  it's somewere  on your
@@ -37,7 +37,7 @@ module Candelabra
       # Simple check to determine if home brew is installed
       #
       # Example:
-      #   Candelabra::Install.has_brew?
+      #   Candelabra::Install.has_installer?
       #     # => On osx it should be true
       #     # => On ubuntu it should be false
       #

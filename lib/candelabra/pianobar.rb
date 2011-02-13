@@ -39,8 +39,7 @@ module Candelabra
     #
     # Returns the process ID a.k.a pid
     def start
-      make_logs
-      @pid = spawn( 'pianobar', :out => 'logs/out.log' )
+      @pid = spawn( 'pianobar', :out => File.open( Installer.output_path, 'w+' ) )
       ::Process.detach(@pid)
       @pid
     end
@@ -86,16 +85,5 @@ module Candelabra
       @pid = nil
     end
 
-    # Util method. Should be moved  to the install module when it
-    # has been created.
-    #
-    # Example:
-    #   Candelabra::Pianobar.make_logs
-    #     # => doesn't really belong here
-    #
-    # Returns nothing. but it makes the logs dir
-    def make_logs
-      Dir.mkdir( 'logs' ) unless test ?d, 'logs'
-    end
   end
 end

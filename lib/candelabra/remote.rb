@@ -40,9 +40,13 @@ module Candelabra
     #     # => pauses pianobar
     #
     # Returns command you passed in
-    def execute_command cmd
+    def execute_command cmd 
       return Candelabra::Pianobar.start unless Candelabra::Pianobar.running?
-      %x[ echo -n #{commands[cmd]} > #{Candelabra::Installer.ctl_path} ]
+      if commands.include? cmd
+        %x[ echo #{commands[cmd]} > #{Candelabra::Installer.ctl_path} ]
+      else
+        %x[ echo #{cmd} > #{Candelabra::Installer.ctl_path} ]
+      end
       cmd
     end
 
@@ -63,6 +67,33 @@ module Candelabra
         super method, args
       end
     end
+
+    def change_station( station_number = nil )
+      execute_command( :change_station )
+      if station_number.nil?
+        read_stations
+      else
+        execute_command( "s" + station_number.to_s ) unless station_number.nil?
+      end
+    end
+
+    def read_stations
+      stations = [] 
+      io.lines.each do |line|
+        /(\[\?\])/ =~ line
+        break if $1 == '[?]'
+        stations << $1 if /(#{stations.size}\).+)/ =~ line
+      end
+      stations
+    end
+
+    def io
+      return @io unless @io.nil?
+      @io = File.open( Candelabra::Installer.output_path, 'r+' )
+      @io.autoclose = true
+      @io
+    end
+
 
   end
 end

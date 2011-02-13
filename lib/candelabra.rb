@@ -1,5 +1,5 @@
 # Pulling in all the libs we need to get the job done
-%w(shell singleton optparse rainbow net/http).each do |lib|
+%w(shell singleton optparse rainbow net/http fileutils).each do |lib|
   require lib
 end
 
