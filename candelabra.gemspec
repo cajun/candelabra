@@ -14,8 +14,6 @@ Gem::Specification.new do |s|
   s.required_rubygems_version = ">= 1.3.6"
   s.rubyforge_project         = "candelabra"
 
-  s.add_dependency "rainbow", "~> 1.1.1"
-
   s.add_development_dependency "bundler"  , "~> 1.0.0"
   s.add_development_dependency "minitest" , ">= 2.0.2"
 

@@ -35,13 +35,13 @@ module Candelabra
     #
     # Return if all is ok to install
     def what_is_installed?
-      puts " => Detecting OS".ljust(70,'.') + os.color(:green)
-      puts " => Detecting Package Manager".ljust(70,'.') + ( has_installer? ? 'Yes'.color(:green) : 'No'.color(:red) )
-      puts " => Detecting Pianobar".ljust(70,'.') + ( pianobar? ? 'Yes'.color(:green) : 'No'.color(:red) )
-      puts " => Detecting Control File".ljust(70,'.') + ( ctl? ? 'Yes'.color(:green) : 'No'.color(:red) )
-      puts " => Detecting Notifyer".ljust(70,'.') + ( notify? ? 'Yes'.color(:green) : 'No'.color(:red) )
+      puts " => Detecting OS".ljust(70,'.') + os.green
+      puts " => Detecting Package Manager".ljust(70,'.') + ( has_installer? ? 'Yes'.green : 'No'.red.blink )
+      puts " => Detecting Pianobar".ljust(70,'.') + ( pianobar? ? 'Yes'.green : 'No'.red.blink )
+      puts " => Detecting Control File".ljust(70,'.') + ( ctl? ? 'Yes'.green : 'No'.red.blink )
+      puts " => Detecting Notifyer".ljust(70,'.') + ( notify? ? 'Yes'.green : 'No'.red.blink )
 
-      puts "   => Ok to install".ljust(70,'.') + ( has_installer? ? 'Yes'.color(:green) : 'No'.color(:red) )
+      puts "   => Ok to install".ljust(70,'.') + ( has_installer? ? 'Yes'.green : 'No'.red.blink )
       has_installer?
     end
 
