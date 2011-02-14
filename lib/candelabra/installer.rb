@@ -15,7 +15,7 @@ module Candelabra
   #     # => sudo apt-get install pianobar
   module Installer
     module_function
-  
+
     CONSOLE_WIDTH = 70
 
     extend OSX
@@ -56,7 +56,7 @@ module Candelabra
       puts "Configuring Pianobar account".center(CONSOLE_WIDTH + 20, '_')
       puts "Enter your Pandora's account information"
       username, password  = ask( "Enter username:" ), ask( "Enter password:", false )
-      
+
       config_path = "#{ENV['HOME']}/.config/pianobar/config"
       new_name = [config_path, username, Dir.glob(config_path + '*').size.to_s].join('.')
       FileUtils.mv config_path, new_name if File.exists? config_path
