@@ -3,5 +3,13 @@
 require 'rubygems'
 require File.dirname(__FILE__) + '/../lib/candelabra'
 
-runner = Candelabra::Runner.new ARGV
+# If the input comes from the terminal (i.e. user) then have
+# candelabra handle it as user input, otherwise handle the input
+# as an event from another application.
+if $stdin.tty?
+  runner = Candelabra::Runner.new ARGV
+else
+  runner = Candelabra::EventCmd.new ARGV
+end
+
 runner.run

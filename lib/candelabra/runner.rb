@@ -18,7 +18,7 @@ module Candelabra
   class Runner
     attr_reader :config, :options, :command, :data
 
-    # Set up the running for Candelabra.  Parse out command and 
+    # Set up the running for Candelabra.  Parse out command and
     # get all the data required for any command
     #
     # Returns...it's the initializer
@@ -27,19 +27,19 @@ module Candelabra
       @command = args.shift
       @data    = args
     end
-  
+
     # Take in the arguments from the command line and parse out any
     # options and set up the options hash
     #
-    # Returns parsed options
+    # Returns parsed optionr
     def parse( args )
       @options ={}
       Candelabra::Configuration.go do |config|
         OptionParser.new( args ) do |opts|
           opts.banner = 'Usage: candelabra [command] [opts]'
 
-          opts.on( '-e','--event [EVENT=DATA]', 
-                  'Send the EVENT to Candelabra.', 
+          opts.on( '-e','--event [EVENT=DATA]',
+                  'Send the EVENT to Candelabra.',
                   'if the extra DATA is supplied',
                   'set the EVENT to the DATA.' ) do |event_command|
 
