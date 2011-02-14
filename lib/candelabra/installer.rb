@@ -100,7 +100,7 @@ password = #{@password}
         config_path = "#{ENV['HOME']}/.config/pianobar/config"
         File.open( config_path, 'w' ) { |f| f.write config_template( nil, nil, id ) }
 
-        puts "Restarting Pianobar".ljust(CONSOLE_WIDTH, '.')
+        print "Restarting Pianobar".ljust(CONSOLE_WIDTH, '.')
         Pianobar.restart
         print Pianobar.running? ? "SUCCESS".color(:green) : "FAILED".color(:red)
         puts ""

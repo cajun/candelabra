@@ -123,10 +123,9 @@ module Candelabra
     # Returns an array of stations
     def stations 
       list = [] 
-      # execute_command( :change_station ) 
+      execute_command( :change_station ) 
       output do |io|
         io.lines.each do |line|
-          puts line
           /(\[\?\])/ =~ line
           break if $1 == '[?]' # this denotes the use input for which station to change to
           list << $1 if /(#{list.size}\).+)/ =~ line
