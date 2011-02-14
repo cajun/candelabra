@@ -18,8 +18,7 @@ module Candelabra
     # Returns int or nil
     def pid
       return @pid unless @pid.nil?
-      @pid = %x[ps -a | grep pianobar$].split(' ').first
-      @pid = @pid.to_i unless @pid.nil?
+      @pid = execute.command :pid
     end
 
     # Check to determine if pianobar is running anywhere on the system
@@ -39,9 +38,7 @@ module Candelabra
     #
     # Returns the process ID a.k.a pid
     def start
-      @pid = spawn( 'pianobar', :out => File.open( Installer.output_path, 'w+' ) )
-      ::Process.detach(@pid)
-      @pid
+      @pid = execute.command :start
     end
 
     # Die pianobar die!!!! Yeah that is what it does. If you have
@@ -53,8 +50,8 @@ module Candelabra
     #
     # Returns nothing
     def stop
-      ::Process.kill('HUP', pid)
-      @pid = nil
+      execute.commands[:stop] = Stop.new(pid)
+      execute.command :stop
     end
 
 
@@ -81,8 +78,64 @@ module Candelabra
     #
     # Returns nothing useful
     def stop_all
-      %x[killall pianobar]
-      @pid = nil
+      @pid = execute.command :stop_all
+    end
+
+    # An implementation of the command pattern
+    # see the GOF book...
+    def execute
+      @execute ||= Execute.new
+    end
+
+    class Execute
+      attr_accessor :commands
+
+      def initialize
+        @commands = {
+          :start => Start.new,
+          :stop_all => StopAll.new,
+          :pid => PID.new
+        }
+      end
+
+      def command(command)
+        @commands[command].go if @commands[command]
+      end
+    end
+
+    # The following classes are commands invoked with the 'go' method
+    class Start
+      def go
+        pid = spawn( 'pianobar', :out => File.open( Installer.output_path, 'w+' ) )
+        ::Process.detach(pid)
+        pid
+      end
+    end
+
+    class StopAll
+      def go
+        %x[killall pianobar]
+        nil
+      end
+    end
+
+    class Stop
+      def initialize(pid)
+        @pid = pid
+      end
+
+      def go
+        return if @pid.nil?
+        ::Process.kill('HUP', @pid)
+        @pid = nil
+      end
+    end
+
+    class PID
+      def go
+        pid = %x[ps -a | grep pianobar$].split(' ').first
+        pid = pid.to_i unless pid.nil?
+      end
     end
 
   end
