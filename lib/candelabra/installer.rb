@@ -15,7 +15,7 @@ module Candelabra
   #     # => sudo apt-get install pianobar
   module Installer
     module_function
-  
+
     CONSOLE_WIDTH = 70
 
     extend OSX
@@ -41,13 +41,13 @@ module Candelabra
     #
     # Return if all is ok to install
     def what_is_installed?
-      puts " => Detecting OS".ljust(CONSOLE_WIDTH,'.') + os.color(:green)
-      puts " => Detecting Package Manager".ljust(CONSOLE_WIDTH,'.') + ( has_installer? ? 'Yes'.color(:green) : 'No'.color(:red) )
-      puts " => Detecting Pianobar".ljust(CONSOLE_WIDTH,'.') + ( pianobar? ? 'Yes'.color(:green) : 'No'.color(:red) )
-      puts " => Detecting Control File".ljust(CONSOLE_WIDTH,'.') + ( ctl? ? 'Yes'.color(:green) : 'No'.color(:red) )
-      puts " => Detecting Notifyer".ljust(CONSOLE_WIDTH,'.') + ( notify? ? 'Yes'.color(:green) : 'No'.color(:red) )
+      puts " => Detecting OS".ljust(70,'.') + os.green
+      puts " => Detecting Package Manager".ljust(70,'.') + ( has_installer? ? 'Yes'.green : 'No'.red.blink )
+      puts " => Detecting Pianobar".ljust(70,'.') + ( pianobar? ? 'Yes'.green : 'No'.red.blink )
+      puts " => Detecting Control File".ljust(70,'.') + ( ctl? ? 'Yes'.green : 'No'.red.blink )
+      puts " => Detecting Notifyer".ljust(70,'.') + ( notify? ? 'Yes'.green : 'No'.red.blink )
 
-      puts "   => Ok to install".ljust(CONSOLE_WIDTH,'.') + ( has_installer? ? 'Yes'.color(:green) : 'No'.color(:red) )
+      puts "   => Ok to install".ljust(70,'.') + ( has_installer? ? 'Yes'.green : 'No'.red.blink )
       has_installer?
     end
 
@@ -56,7 +56,7 @@ module Candelabra
       puts "Configuring Pianobar account".center(CONSOLE_WIDTH + 20, '_')
       puts "Enter your Pandora's account information"
       username, password  = ask( "Enter username:" ), ask( "Enter password:", false )
-      
+
       config_path = "#{ENV['HOME']}/.config/pianobar/config"
       new_name = [config_path, username, Dir.glob(config_path + '*').size.to_s].join('.')
       FileUtils.mv config_path, new_name if File.exists? config_path

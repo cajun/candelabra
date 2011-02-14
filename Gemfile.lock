@@ -2,13 +2,11 @@ PATH
   remote: .
   specs:
     candelabra (0.0.1)
-      rainbow (~> 1.1.1)
 
 GEM
   remote: http://rubygems.org/
   specs:
     minitest (2.0.2)
-    rainbow (1.1.1)
 
 PLATFORMS
   ruby
@@ -17,4 +15,3 @@ DEPENDENCIES
   bundler (~> 1.0.0)
   candelabra!
   minitest (>= 2.0.2)
-  rainbow (~> 1.1.1)
