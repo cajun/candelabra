@@ -8,8 +8,8 @@ require File.dirname(__FILE__) + '/../lib/candelabra'
 # as an event from another application.
 if $stdin.tty?
   runner = Candelabra::Runner.new ARGV
-  runner.run
 else
   runner = Candelabra::EventCmd.new ARGV
-  runner.run
 end
+
+runner.run
