@@ -17,6 +17,7 @@ module Candelabra
       case command
       when 'songstart'
         notify
+        Remote.flush
       end
     end
     

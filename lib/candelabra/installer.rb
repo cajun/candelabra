@@ -28,6 +28,7 @@ module Candelabra
       install_pianobar
       setup_config_file
       make_fifos
+      setup_auto_play_station
     end
 
     def header
@@ -68,11 +69,42 @@ module Candelabra
       mkfifo( output_path ) unless output?
     end
 
-    def config_template( username, password )
-      %Q{event_command = #{File.dirname(__FILE__)}/../../bin/eventcmd.rb
-user = #{username}
-password = #{password}
+    def config_template( username, password, station_id = nil )
+      @username ||= username
+      @password ||= password
+      config = %Q{event_command = #{File.dirname(__FILE__)}/../../bin/eventcmd.rb
+user = #{@username}
+password = #{@password}
 }
+
+      config += "autostart_station = #{ station_id }" if station_id
+      config
+    end
+
+    def setup_auto_play_station
+      puts "Testing Configuration".center(CONSOLE_WIDTH, '_')
+      Pianobar.stop_all # make sure all are off
+      print "Starting Pianobar".ljust(CONSOLE_WIDTH, '.')
+      Pianobar.start
+      sleep( 2 )
+      print Pianobar.running? ? "SUCCESS".color(:green) : "FAILED".color(:red)
+
+      if Pianobar.running?
+        Remote.flush
+        puts ''
+        puts "Select Auto station".center( CONSOLE_WIDTH + 20, ' ' )
+        puts 'Select Station and press ENTER:'
+        Remote.stations
+        id = Remote.station_id
+        Remote.pause
+        config_path = "#{ENV['HOME']}/.config/pianobar/config"
+        File.open( config_path, 'w' ) { |f| f.write config_template( nil, nil, id ) }
+
+        puts "Restarting Pianobar".ljust(CONSOLE_WIDTH, '.')
+        Pianobar.restart
+        print Pianobar.running? ? "SUCCESS".color(:green) : "FAILED".color(:red)
+        puts ""
+      end
     end
 
     # Install Pianobar and be cool
@@ -138,7 +170,7 @@ password = #{password}
     end
 
     def output?
-      test ?p, fifo_out_path
+      test ?p, output_path
     end
 
     def output_path

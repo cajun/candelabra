@@ -79,28 +79,64 @@ module Candelabra
     # Returns list of stations _or_ changes the station to the requested station
     def change_station( station_number = nil )
       if station_number.nil?
-        read_stations
+        stations
       else
         execute_command( :change_station )
         execute_command( "s" + station_number.to_s ) unless station_number.nil?
       end
     end
 
+    def station_ids
+      return @ids unless @ids.nil?
+      @ids = []
+      stations.each_with_index do |station,index|
+        change_station(index)
+        @ids << station_id
+      end
+      pause # this is because the it will play the last station other wise
+      @ids
+    end
+
+    def station_id
+      /(\d+)/ =~ info
+      $1
+    end
+
+    def info
+      execute_command( :info )
+      song_info = ''
+      output do |io|
+        io.lines.each do |line|
+          /(Station .+ \(\d+\))/ =~ line
+          if $1
+            song_info = $1
+            break
+          end
+        end
+      end
+      song_info
+    end
+
     # Get a list of stations from the system
     # read the station list from the command line
     #
     # Returns an array of stations
-    def read_stations
-      stations = [] 
-      execute_command( :change_station )
+    def stations 
+      list = [] 
+      # execute_command( :change_station ) 
       output do |io|
         io.lines.each do |line|
+          puts line
           /(\[\?\])/ =~ line
           break if $1 == '[?]' # this denotes the use input for which station to change to
-          stations << $1 if /(#{stations.size}\).+)/ =~ line
+          list << $1 if /(#{list.size}\).+)/ =~ line
         end
       end
-      stations
+      list
+    end
+
+    def flush
+      output {|io| io.flush }
     end
 
     # The out put file for the commands
