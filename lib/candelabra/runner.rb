@@ -46,7 +46,7 @@ module Candelabra
             event, cmd = event_command.split('=')
             config.send( event + '=', cmd ) if cmd
             @options[event] = true
-          end
+                  end
 
           opts.on_tail( '-h', '--help', 'Show this message' ) do
             puts opts

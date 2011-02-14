@@ -87,7 +87,7 @@ password = #{@password}
       print "Starting Pianobar".ljust(CONSOLE_WIDTH, '.')
       Pianobar.start
       sleep( 2 )
-      print Pianobar.running? ? "SUCCESS".color(:green) : "FAILED".color(:red)
+      print Pianobar.running? ? "SUCCESS".green : "FAILED".red.blink
 
       if Pianobar.running?
         Remote.flush
@@ -102,7 +102,7 @@ password = #{@password}
 
         print "Restarting Pianobar".ljust(CONSOLE_WIDTH, '.')
         Pianobar.restart
-        print Pianobar.running? ? "SUCCESS".color(:green) : "FAILED".color(:red)
+        print Pianobar.running? ? "SUCCESS".green : "FAILED".red.blink
         puts ""
       end
     end
@@ -111,11 +111,11 @@ password = #{@password}
     def install_pianobar
       print "Installing Pianobar".ljust(CONSOLE_WIDTH, '.')
       install 'pianobar'
-      print pianobar? ? 'SUCCESS'.color(:green) : 'FAILED'.color(:red)
+      print pianobar? ? 'SUCCESS'.green : 'FAILED'.red.blink
     end
 
     # Helper for asking a question
-    # 
+    #
     # Params:
     #   question => the question u want to ask maybe?
     #   visiable => this  will determine if  the output  should be
