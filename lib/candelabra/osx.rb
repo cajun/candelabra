@@ -18,7 +18,7 @@ module Candelabra
       #
       # Returns standard output from home brew
       def install lib
-        %x[brew install #{lib}] if has_brew?
+        %x[brew install #{lib}] if has_installer?
       end
 
       # Gets  the path  of home  brew. If  it's somewere  on your
@@ -37,7 +37,7 @@ module Candelabra
       # Simple check to determine if home brew is installed
       #
       # Example:
-      #   Candelabra::Install.has_brew?
+      #   Candelabra::Install.has_installer?
       #     # => On osx it should be true
       #     # => On ubuntu it should be false
       #
@@ -45,11 +45,30 @@ module Candelabra
       def has_installer?
         !installer_path.nil?
       end
+
+      def os
+        'OSX'
+      end
+
+      def notify?
+        !%x[which growlnotify].chomp.nil?
+      end
+
+      # Notify the user using growl
+      def notify
+        %x[growlnotify --image #{art_work} -t "Pianobar - #{stationName}" -m "Now Playing: #{artist} - #{title}"]
+      end
+
     end
 
     # Load the installer methods IF this is the correct OS
     def self.extended klass
       klass.extend( InstanceMethods ) if osx?
+    end
+
+    # Load the installer methods IF this is the correct OS
+    def self.included klass
+      klass.send( :include, InstanceMethods ) if osx?
     end
 
     # This method will say if the OS is OSX or not
