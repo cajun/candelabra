@@ -75,7 +75,7 @@ module Candelabra
     def config_template( username, password, station_id = nil )
       @username ||= username
       @password ||= password
-      config = %Q{event_command = #{File.dirname(__FILE__)}/../../bin/eventcmd.rb
+      config = %Q{event_command = #{File.dirname(__FILE__)}/../../bin/candelabra
 user = #{@username}
 password = #{@password}
 }
@@ -97,7 +97,7 @@ password = #{@password}
       print Pianobar.running? ? "SUCCESS".green : "FAILED".red.blink
 
       if Pianobar.running?
-        `echo '0' > /Users/zackleinpeter/.config/pianobar/input.fifo`
+        `echo '0' > #{Installer.input_path}`
         sleep( 2 )
         puts ''
         puts "Select Auto station".center( CONSOLE_WIDTH + 20, ' ' )
