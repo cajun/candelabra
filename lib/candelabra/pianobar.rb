@@ -39,7 +39,7 @@ module Candelabra
     #
     # Returns the process ID a.k.a pid
     def start
-      @pid = spawn( 'pianobar', :out => File.open( Installer.output_path, 'w+' ) )
+      @pid = spawn( 'pianobar', :in => File.open( '/Users/zackleinpeter/.config/pianobar/input.fifo', 'r+' ), :out => File.open( Installer.output_path, 'w+' ) )
       ::Process.detach(@pid)
       @pid
     end

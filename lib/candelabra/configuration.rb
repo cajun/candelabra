@@ -2,7 +2,7 @@ module Candelabra
   class Configuration
     include Singleton
 
-    attr_accessor :auto_restart, :event_handler
+    attr_accessor :auto_restart, :event_handler, :in_installer
     attr_writer :on_song_start, :on_song_finish, :on_error
 
     class << self

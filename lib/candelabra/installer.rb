@@ -86,17 +86,29 @@ password = #{@password}
       Pianobar.stop_all # make sure all are off
       print "Starting Pianobar".ljust(CONSOLE_WIDTH, '.')
       Pianobar.start
-      sleep( 2 )
+
+      5.times do 
+        sleep(1)
+        putc '.'
+      end
+
       print Pianobar.running? ? "SUCCESS".color(:green) : "FAILED".color(:red)
 
       if Pianobar.running?
-        Remote.flush
+        `echo '0' > /Users/zackleinpeter/.config/pianobar/input.fifo`
+        sleep( 2 )
         puts ''
         puts "Select Auto station".center( CONSOLE_WIDTH + 20, ' ' )
-        puts 'Select Station and press ENTER:'
-        Remote.stations
+        stations = Remote.stations
+        stations.each { |s| puts s }
+        
+        result = ask 'Select Station and press ENTER:'
+
+        puts "You selected: #{stations[result.to_i]}"
+
+        Remote.change_station result
         id = Remote.station_id
-        Remote.pause
+
         config_path = "#{ENV['HOME']}/.config/pianobar/config"
         File.open( config_path, 'w' ) { |f| f.write config_template( nil, nil, id ) }
 
@@ -104,6 +116,7 @@ password = #{@password}
         Pianobar.restart
         print Pianobar.running? ? "SUCCESS".color(:green) : "FAILED".color(:red)
         puts ""
+
       end
     end
 
@@ -123,11 +136,14 @@ password = #{@password}
     #
     # Returns result of the user's input
     def ask( question, visiable=true )
-      print question
-      `stty -echo` unless visiable
-      gets.chomp
-    ensure
-      `stty echo`
+      begin
+        `stty echo`
+        print question
+        `stty -echo` unless visiable
+        gets.chomp
+      ensure
+        `stty echo`
+      end
     end
 
 
