@@ -19,7 +19,7 @@ module Candelabra
       #
       # Returns standard output from home apt_get
       def install lib
-        `gksudo apt-get install #{lib}` if has_apt_get?
+        `gksudo apt-get install #{lib}` if has_installer?
       end
 
       # Gets the path  of home apt-get. If it's  somewere on your
