@@ -56,7 +56,7 @@ module Candelabra
       end
 
       def notify
-        `notify-send -i #{art_work} "Pianobar - #{stationName}" "Now Playing: #{ artist } - #{ title }"`
+        `notify-send -i #{File.realpath(art_work)} "Pianobar - #{stationName}" "Now Playing: #{ artist } - #{ title }"`
       end
     end
 
