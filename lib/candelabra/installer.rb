@@ -94,7 +94,7 @@ password = #{@password}
         putc '.'
       end
 
-      print Pianobar.running? ? "SUCCESS".color(:green) : "FAILED".color(:red)
+      print Pianobar.running? ? "SUCCESS".green : "FAILED".red.blink
 
       if Pianobar.running?
         `echo '0' > /Users/zackleinpeter/.config/pianobar/input.fifo`
@@ -114,7 +114,7 @@ password = #{@password}
         config_path = "#{ENV['HOME']}/.config/pianobar/config"
         File.open( config_path, 'w' ) { |f| f.write config_template( nil, nil, id ) }
 
-        print "Restarting Pianobar".ljust(CONSOLE_WIDTH, '.')
+        print "Restarting Pianobar with Autostation".ljust(CONSOLE_WIDTH, '.')
         Pianobar.restart
         print Pianobar.running? ? "SUCCESS".green : "FAILED".red.blink
         puts ""
