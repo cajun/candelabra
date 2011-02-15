@@ -11,7 +11,7 @@ module Candelabra
       @command = args.shift
     end
 
-    # Run the command.  Part of running the command 
+    # Run the command.  Part of running the command
     def run
       parse( $stdin )
       case command
@@ -20,7 +20,7 @@ module Candelabra
         Remote.flush
       end
     end
-    
+
     # Parse out the data from  stdin. This will set instance vars
     # that are named the same as the input from pianobar
     #
