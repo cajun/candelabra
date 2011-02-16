@@ -67,6 +67,8 @@ module Candelabra
     #
     # Returns nothing special
     def run
+      # here comes brute
+      cmds = Remote.commands.keys.map{|x| x.to_s }.abbrev
       case command
       when 'start'
         Candelabra::Pianobar.start
@@ -81,8 +83,8 @@ module Candelabra
         puts "On Song Start: #{ config.on_song_start }" if options['on_song_start']
         puts "On Song Finish: #{ config.on_song_finish }" if options['on_song_finish']
         puts "On Error: #{ config.on_error }" if options['on_error']
-      when *Remote.commands.map {|k,v| k.to_s }
-        Remote.send command.to_sym
+      when *cmds.keys
+        Remote.send cmds[command].to_sym
       else
         puts "No command given"
       end

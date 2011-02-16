@@ -1,5 +1,5 @@
 # Pulling in all the libs we need to get the job done
-%w(shell fileutils singleton optparse net/http erb).each do |lib|
+%w(shell fileutils singleton optparse net/http erb abbrev).each do |lib|
   require lib
 end
 
