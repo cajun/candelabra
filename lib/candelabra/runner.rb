@@ -23,9 +23,7 @@ module Candelabra
     #
     # Returns...it's the initializer
     def initialize(args)
-      @config  = parse args
       @command = args.shift
-      @data    = args
     end
 
     # Take in the arguments from the command line and parse out any
@@ -83,6 +81,8 @@ module Candelabra
         puts "On Song Start: #{ config.on_song_start }" if options['on_song_start']
         puts "On Song Finish: #{ config.on_song_finish }" if options['on_song_finish']
         puts "On Error: #{ config.on_error }" if options['on_error']
+      when *Remote.commands.map {|k,v| k.to_s }
+        Remote.send command.to_sym
       else
         puts "No command given"
       end

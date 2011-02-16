@@ -40,7 +40,7 @@ module Candelabra
     #     # => pauses pianobar
     #
     # Returns command you passed in
-    def execute_command cmd 
+    def execute_command cmd
       return Candelabra::Pianobar.start unless Candelabra::Pianobar.running?
       if commands.include? cmd
         %x[ echo #{commands[cmd]} > #{Candelabra::Installer.ctl_path} ]
@@ -68,7 +68,7 @@ module Candelabra
       end
     end
 
-    # When changing stations the user needs to get the list of stations.  
+    # When changing stations the user needs to get the list of stations.
     #
     # Example:
     #   Candelabra::Remote.change_station
@@ -121,9 +121,9 @@ module Candelabra
     # read the station list from the command line
     #
     # Returns an array of stations
-    def stations 
-      list = [] 
-      execute_command( :change_station ) 
+    def stations
+      list = []
+      execute_command( :change_station )
       output do |io|
         io.lines.each do |line|
           /(\[\?\])/ =~ line
