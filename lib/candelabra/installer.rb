@@ -103,6 +103,7 @@ module Candelabra
       end
 
       print Pianobar.running? ? "SUCCESS".green : "FAILED".red.blink
+      puts ""
     end
 
     def setup_auto_play_station
@@ -120,10 +121,11 @@ module Candelabra
         
         begin
           result = ask 'Select Station and press ENTER:'
-          raise unless result == result.to_i.to_s
+          raise "You must enter the number of a valid station" unless result == result.to_i.to_s
+          raise "That is not a valid station it must be a number between 0 and #{stations.size - 1}" unless (0..stations.size - 1).include? result.to_i
           puts "You selected: #{stations[result.to_i]}"
-        rescue
-          puts "You must enter the number of the station.".red
+        rescue RuntimeError => e
+          puts e.message.red
           puts "You Entered: #{result.red}"
           puts "Try again"
           retry
@@ -137,10 +139,10 @@ module Candelabra
       end
     end
 
-    # Install Pianobar and be cool
+    # Instal
     def install_pianobar
       print "Installing Pianobar".ljust(CONSOLE_WIDTH, '.')
-      install 'pianobar'
+      install 'pianobar' unless pianobar?
       print pianobar? ? 'SUCCESS'.green : 'FAILED'.red.blink
     end
 
