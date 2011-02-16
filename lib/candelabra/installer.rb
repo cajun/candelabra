@@ -66,7 +66,7 @@ module Candelabra
     def make_fifos
       mkfifo( ctl_path )    unless ctl?
       mkfifo( output_path ) unless output?
-      mkfifo( input_path ) unless input?
+      mkfifo( input_path )  unless input?
     end
 
     def piano_path
