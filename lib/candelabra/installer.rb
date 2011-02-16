@@ -15,8 +15,9 @@ module Candelabra
   #     # => sudo apt-get install pianobar
   module Installer
     module_function
+    attr_reader :username, :password
 
-    CONSOLE_WIDTH = 70
+    CONSOLE_WIDTH = 50
 
     extend OSX
     extend Ubuntu
@@ -32,38 +33,34 @@ module Candelabra
     end
 
     def header
-      puts ""
-      puts " Installing Candelabra Version #{Candelabra::VERSION} ".center(CONSOLE_WIDTH + 20,'*')
-      puts ""
+      puts get_template 'header'
     end
 
     # Display what is installed to the user
     #
     # Return if all is ok to install
     def what_is_installed?
-      puts " => Detecting OS".ljust(70,'.') + os.green
-      puts " => Detecting Package Manager".ljust(70,'.') + ( has_installer? ? 'Yes'.green : 'No'.red.blink )
-      puts " => Detecting Pianobar".ljust(70,'.') + ( pianobar? ? 'Yes'.green : 'No'.red.blink )
-      puts " => Detecting Control File".ljust(70,'.') + ( ctl? ? 'Yes'.green : 'No'.red.blink )
-      puts " => Detecting Notifyer".ljust(70,'.') + ( notify? ? 'Yes'.green : 'No'.red.blink )
+      which_os        = os.green
+      package_manager = ( has_installer?  ? 'Yes'.green : 'No'.red.blink )
+      exe_installed   = ( pianobar?       ? 'Yes'.green : 'No'.red.blink )
+      ctl_file        = ( ctl?            ? 'Yes'.green : 'No'.red.blink )
+      has_notifier    = ( notify?         ? 'Yes'.green : 'No'.red.blink )
+      ok              = ( has_installer?  ? 'Yes'.green : 'No'.red.blink )
 
-      puts "   => Ok to install".ljust(70,'.') + ( has_installer? ? 'Yes'.green : 'No'.red.blink )
+      puts get_template 'what_is_installed', binding
+
       has_installer?
     end
 
     def setup_config_file
-      puts ""
-      puts "Configuring Pianobar account".center(CONSOLE_WIDTH + 20, '_')
-      puts "Enter your Pandora's account information"
-      username, password  = ask( "Enter username:" ), ask( "Enter password:", false )
+      puts get_template 'setup_config_file'
+      @username, @password  = ask( "Enter username:" ), ask( "Enter password:", false )
 
-      piano_path = "#{ENV['HOME']}/.config/pianobar"
       FileUtils.mkdir_p piano_path
-      config_path = "#{ENV['HOME']}/.config/pianobar/config"
-      new_name = [config_path, username, Dir.glob(config_path + '*').size.to_s].join('.')
-      FileUtils.mv config_path, new_name if File.exists? config_path
-      File.open( config_path, 'w' ) { |f| f.write config_template( username, password ) }
-      puts ""
+      FileUtils.mv config_path, backup_config_name if File.exists? config_path
+      File.open( config_path, 'w' ) do |f| 
+        f.write config_template( username, password )
+      end
     end
 
     def make_fifos
@@ -72,22 +69,38 @@ module Candelabra
       mkfifo( input_path ) unless input?
     end
 
-    def config_template( username, password, station_id = nil )
-      @username ||= username
-      @password ||= password
-      config = %Q{event_command = #{File.dirname(__FILE__)}/../../bin/candelabra
-user = #{@username}
-password = #{@password}
-}
+    def piano_path
+      "#{ENV['HOME']}/.config/pianobar"
+    end
 
-      config += "autostart_station = #{ station_id }" if station_id
-      config
+    def config_path
+      "#{piano_path}/config"
+    end
+
+    def backup_config_name
+      [config_path, username, Dir.glob(config_path + '*').size.to_s].join('.')
+    end
+
+    def config_template( station_id = nil )
+      @exe_path = "#{File.dirname(__FILE__)}/../../bin/candelabra"
+      @station  = station_id
+      get_template('config')
+    end
+
+    def get_template( name, this_binding =nil)
+      erb = ERB.new(File.read(File.dirname(__FILE__) + "/templates/#{name}.erb"))
+      if this_binding
+        erb.result this_binding
+      else
+        erb.result binding
+      end
     end
 
     def setup_auto_play_station
-      puts "Testing Configuration".center(CONSOLE_WIDTH, '_')
       Pianobar.stop_all # make sure all are off
-      print "Starting Pianobar".ljust(CONSOLE_WIDTH, '.')
+      puts "Testing Configuration".center(CONSOLE_WIDTH + 20)
+      print "Starting Pianobar".ljust(CONSOLE_WIDTH - 5, '.')
+
       Pianobar.start
       5.times do 
         sleep(1)
@@ -105,16 +118,14 @@ password = #{@password}
         stations.each { |s| puts s }
         
         result = ask 'Select Station and press ENTER:'
-
         puts "You selected: #{stations[result.to_i]}"
 
         Remote.change_station result
         id = Remote.station_id
 
-        config_path = "#{ENV['HOME']}/.config/pianobar/config"
         File.open( config_path, 'w' ) { |f| f.write config_template( nil, nil, id ) }
 
-        print "Restarting Pianobar with Autostation".ljust(CONSOLE_WIDTH, '.')
+        print "Restarting Pianobar with Autostation".ljust(CONSOLE_WIDTH + 20, '.')
         Pianobar.restart
         print Pianobar.running? ? "SUCCESS".green : "FAILED".red.blink
         puts ""
