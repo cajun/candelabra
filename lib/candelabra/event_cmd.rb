@@ -20,17 +20,8 @@ module Candelabra
         Remote.flush
       when 'userlogin'
         unless @pRet.to_i == 1
-          `notify-send Bad Username`
           `ps a | grep 'candelabra install' | cut -c1-5`.split("\n").each{|id| `kill #{id}` unless Process.pid == id.to_i }
         end
-
-      else
-        #`notify-send #{@pRet}`
-        #`notify-send #{command}`
-        #`notify-send #{command}`
-        #instance_variables.each do |i|
-        #  `notify-send #{i}`
-        #end
       end
     end
 

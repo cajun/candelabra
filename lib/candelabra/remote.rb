@@ -42,6 +42,7 @@ module Candelabra
     #
     # Returns command you passed in
     def execute_command cmd
+      return nil unless Candelabra::Pianobar.running?
       if commands.include? cmd
         %x[ echo #{commands[cmd]} > #{Candelabra::Installer.ctl_path} ]
       else
@@ -123,7 +124,7 @@ module Candelabra
     # Returns an array of stations
     def stations
       list = []
-      execute_command( :change_station )
+      execute_command( :stations )
       output do |io|
         io.lines.each do |line|
           /(\[\?\])/ =~ line
@@ -135,15 +136,11 @@ module Candelabra
     end
 
     def flush
-      output do |io| 
-        loop do
-          begin
-            io.read_nonblock(1); 
-          rescue 
-            break
-          end 
-        end
-      end
+      output { |io| io.flush }
+    end
+
+    def flush_input
+      input { |io| io.flush }
     end
 
     # The out put file for the commands
@@ -152,6 +149,16 @@ module Candelabra
     # Yields and IO reader for pianobar's output
     def output
       File.open( Candelabra::Installer.output_path, 'r+' ) do |io|
+        yield(io)
+      end
+    end
+
+    # The out put file for the commands
+    # This contains all the output from pianobar
+    #
+    # Yields and IO reader for pianobar's output
+    def input
+      File.open( Candelabra::Installer.input_path, 'r+' ) do |io|
         yield( io )
       end
     end

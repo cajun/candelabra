@@ -56,7 +56,7 @@ module Candelabra
 
       # Notify the user using growl
       def notify
-        %x[growlnotify --image #{art_work} -t "Pianobar - #{stationName}" -m "Now Playing: #{artist} - #{title}"]
+        %x[growlnotify --image #{art_work} -t "Pianobar - #{stationName}" -m "Now Playing: #{artist} - #{title}"] if notify?
       end
 
     end

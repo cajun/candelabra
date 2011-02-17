@@ -89,6 +89,9 @@ module Candelabra
     end
 
     def start_pianobar
+      Remote.flush
+      Remote.flush_input
+
       if Pianobar.running?
         print "Restarting Pianobar with Autostation".ljust(CONSOLE_WIDTH + 20, '.')
         Pianobar.restart
@@ -113,13 +116,13 @@ module Candelabra
 
       if Pianobar.running?
         `echo '0' > #{Installer.input_path}` # forcing auto selection of the first station
-        sleep( 2 )
+        sleep( 5 )
         puts ''
         puts "Select Auto station".center( CONSOLE_WIDTH + 20, ' ' )
-        stations = Remote.stations
-        stations.each { |s| puts s }
         
         begin
+          stations = Remote.stations
+          stations.each { |s| puts s }
           result = ask 'Select Station and press ENTER:'
           raise "You must enter the number of a valid station" unless result == result.to_i.to_s
           raise "That is not a valid station it must be a number between 0 and #{stations.size - 1}" unless (0..stations.size - 1).include? result.to_i
