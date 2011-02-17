@@ -42,7 +42,6 @@ module Candelabra
     #
     # Returns command you passed in
     def execute_command cmd
-      return Candelabra::Pianobar.start unless Candelabra::Pianobar.running?
       if commands.include? cmd
         %x[ echo #{commands[cmd]} > #{Candelabra::Installer.ctl_path} ]
       else
