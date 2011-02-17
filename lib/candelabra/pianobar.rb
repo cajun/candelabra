@@ -106,7 +106,12 @@ module Candelabra
     # The following classes are commands invoked with the 'go' method
     class Start
       def go
-        pid = spawn( 'pianobar', :in => File.open( Installer.input_path, 'r+' ), :out => File.open( Installer.output_path, 'w+' ) )
+        pid = fork do
+          $stdin.reopen File.open( Installer.input_path, 'r+' )
+          $stdout.reopen File.open( Installer.output_path, 'w+' )
+          exec 'pianobar'
+        end
+
         ::Process.detach(pid)
         pid
       end
