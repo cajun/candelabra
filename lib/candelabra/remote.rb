@@ -21,6 +21,7 @@ module Candelabra
         :next           => 'n',
         :quit           => 'q',
         :change_station => 's',
+        :stations       => 's',
         :tired          => 't',
         :upcomming      => 'u',
         :quick_mix      => 'x',
@@ -47,7 +48,7 @@ module Candelabra
       else
         %x[ echo #{cmd} > #{Candelabra::Installer.ctl_path} ]
       end
-      cmd
+      nil
     end
 
     # Wrapper for all the commands.  This will give you the ability to call the following methods
@@ -135,7 +136,12 @@ module Candelabra
     end
 
     def flush
-      output {|io| io.flush }
+      output do |io| 
+        begin
+          io.read(1); 
+        rescue 
+        end 
+      end
     end
 
     # The out put file for the commands

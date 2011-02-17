@@ -23,7 +23,13 @@ module Candelabra
     #
     # Returns...it's the initializer
     def initialize(args)
+      parse(args)
       @command = args.shift
+      @data = args
+    end
+
+    def banner
+      Installer.get_template 'banner'
     end
 
     # Take in the arguments from the command line and parse out any
@@ -34,17 +40,7 @@ module Candelabra
       @options ={}
       Candelabra::Configuration.go do |config|
         OptionParser.new( args ) do |opts|
-          opts.banner = 'Usage: candelabra [command] [opts]'
-
-          opts.on( '-e','--event [EVENT=DATA]',
-                  'Send the EVENT to Candelabra.',
-                  'if the extra DATA is supplied',
-                  'set the EVENT to the DATA.' ) do |event_command|
-
-            event, cmd = event_command.split('=')
-            config.send( event + '=', cmd ) if cmd
-            @options[event] = true
-                  end
+          opts.banner = banner 
 
           opts.on_tail( '-h', '--help', 'Show this message' ) do
             puts opts
@@ -78,13 +74,12 @@ module Candelabra
         Candelabra::Pianobar.restart
       when 'install'
         Candelabra::Installer.run
-      when 'event'
-        # NOTE: this is mainly for debugging
-        puts "On Song Start: #{ config.on_song_start }" if options['on_song_start']
-        puts "On Song Finish: #{ config.on_song_finish }" if options['on_song_finish']
-        puts "On Error: #{ config.on_error }" if options['on_error']
       when *cmds.keys
-        Remote.send cmds[command].to_sym
+        if data.nil? || data.empty?
+          puts Remote.send cmds[command].to_sym
+        else
+          puts Remote.send cmds[command].to_sym, data
+        end
       else
         puts "No command given"
       end
