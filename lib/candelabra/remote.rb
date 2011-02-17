@@ -137,10 +137,13 @@ module Candelabra
 
     def flush
       output do |io| 
-        begin
-          io.read(1); 
-        rescue 
-        end 
+        loop do
+          begin
+            io.read_nonblock(1); 
+          rescue 
+            break
+          end 
+        end
       end
     end
 
