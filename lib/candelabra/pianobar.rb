@@ -108,7 +108,6 @@ module Candelabra
     class Start
       def go
         pid = fork do
-          [$stdin, $stdout].each {|st| st.close}
           $stdin.reopen  File.open( Installer.input_path , 'r+' )
           $stdout.reopen File.open( Installer.output_path, 'w+' )
           exec 'pianobar'
