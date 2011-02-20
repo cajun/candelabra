@@ -69,9 +69,11 @@ module Candelabra
       when 'start'
         Candelabra::Pianobar.start
       when 'stop'
-        Candelabra::Pianobar.stop
+        Candelabra::Pianobar.stop_all
       when 'restart'
         Candelabra::Pianobar.restart
+      when 'flush' # Force flushing of the fifo files
+        Candelabra::Remote.flush_all
       when 'install'
         Candelabra::Installer.run
       when *cmds.keys

@@ -92,13 +92,14 @@ module Candelabra
 
       def initialize
         @commands = {
-          :start => Start.new,
+          :start    => Start.new,
           :stop_all => StopAll.new,
-          :pid => PID.new
+          :pid      => PID.new
         }
       end
 
       def command(command)
+        Remote.flush_all
         @commands[command].go if @commands[command]
       end
     end
@@ -107,7 +108,8 @@ module Candelabra
     class Start
       def go
         pid = fork do
-          $stdin.reopen File.open( Installer.input_path, 'r+' )
+          [$stdin, $stdout].each {|st| st.close}
+          $stdin.reopen  File.open( Installer.input_path , 'r+' )
           $stdout.reopen File.open( Installer.output_path, 'w+' )
           exec 'pianobar'
         end

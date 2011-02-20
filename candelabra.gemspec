@@ -5,8 +5,8 @@ Gem::Specification.new do |s|
   s.name        = "candelabra"
   s.version     = Candelabra::VERSION
   s.platform    = Gem::Platform::RUBY
-  s.authors     = []
-  s.email       = []
+  s.authors     = ['cajun']
+  s.email       = ['zac@kleinpeter.org']
   s.homepage    = "http://rubygems.org/gems/candelabra"
   s.summary     = "Wrapper for pianobar"
   s.description = "initial wrapper for pianobar"

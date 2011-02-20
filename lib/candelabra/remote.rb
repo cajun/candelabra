@@ -135,12 +135,19 @@ module Candelabra
       list
     end
 
+    def flush_all
+      flush
+      flush_input
+    end
+
     def flush
-      output { |io| io.flush }
+      output { |io| loop { io.read_nonblock(1) } }
+    rescue # TODO put the correct exception
     end
 
     def flush_input
-      input { |io| io.flush }
+      input { |io| loop { io.read_nonblock(1) } }
+    rescue # TODO put the correct exception
     end
 
     # The out put file for the commands
