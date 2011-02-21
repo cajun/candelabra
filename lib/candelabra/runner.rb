@@ -75,6 +75,7 @@ module Candelabra
       when 'flush' # Force flushing of the fifo files
         Candelabra::Remote.flush_all
       when 'install'
+        Candelabra::Pianobar.stop_all
         Candelabra::Installer.run
       when *cmds.keys
         if data.nil? || data.empty?

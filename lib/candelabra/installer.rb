@@ -23,7 +23,6 @@ module Candelabra
 
     # Executing the installing process.
     def run
-      Pianobar.stop_all # make sure all are off
       header
       what_is_installed?
       install_pianobar
@@ -74,7 +73,7 @@ module Candelabra
 
 
     def backup_config_name
-      [config_path, @username, Dir.glob(config_path + '*').size.to_s].join('.')
+      [config_path, @username, 'last'].join('.')
     end
 
     def config_template( station_id = nil )
@@ -89,8 +88,7 @@ module Candelabra
     end
 
     def start_pianobar
-      Remote.flush
-      Remote.flush_input
+      Candelabra::Remote.flush_all
 
       if Pianobar.running?
         print "Restarting Pianobar with Autostation".ljust(CONSOLE_WIDTH + 20, '.')
@@ -113,11 +111,8 @@ module Candelabra
       puts "Testing Configuration".center(CONSOLE_WIDTH + 20)
       start_pianobar
 
-
       if Pianobar.running?
         `echo '0' > #{Installer.input_path}` # forcing auto selection of the first station
-        sleep( 5 )
-        puts ''
         puts "Select Auto station".center( CONSOLE_WIDTH + 20, ' ' )
         
         begin

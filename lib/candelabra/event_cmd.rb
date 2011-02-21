@@ -15,6 +15,8 @@ module Candelabra
     def run
       parse( $stdin )
       case command
+      when 'songfinish'
+        Remote.flush_all # this will flush the fifos after every song
       when 'songstart'
         notify
         Remote.flush

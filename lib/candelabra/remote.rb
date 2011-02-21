@@ -42,9 +42,8 @@ module Candelabra
     #
     # Returns command you passed in
     def execute_command cmd
-      return nil unless Candelabra::Pianobar.running?
       if commands.include? cmd
-        %x[ echo #{commands[cmd]} > #{Candelabra::Installer.ctl_path} ]
+        %x[ echo -n #{commands[cmd]} > #{Candelabra::Installer.ctl_path} ]
       else
         %x[ echo #{cmd} > #{Candelabra::Installer.ctl_path} ]
       end
@@ -141,12 +140,12 @@ module Candelabra
     end
 
     def flush
-      output { |io| loop { io.read_nonblock(1) } }
+      output { |io| loop { io.read_nonblock(1) } } if Candelabra::Installer.output?
     rescue # TODO put the correct exception
     end
 
     def flush_input
-      input { |io| loop { io.read_nonblock(1) } }
+      input { |io| loop { io.read_nonblock(1) } } if Candelabra::Installer.input?
     rescue # TODO put the correct exception
     end
 

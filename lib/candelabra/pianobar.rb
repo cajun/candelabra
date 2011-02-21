@@ -131,7 +131,6 @@ module Candelabra
       end
 
       def go
-        return if @pid.nil?
         ::Process.kill('HUP', @pid)
         @pid = nil
       end
