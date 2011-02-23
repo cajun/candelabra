@@ -18,9 +18,10 @@ module Candelabra
       when 'songfinish'
         Remote.flush_all # this will flush the fifos after every song
       when 'songstart'
-        notify
         Remote.flush
+        notify
       when 'userlogin'
+        Remote.flush
         unless @pRet.to_i == 1
           `ps a | grep 'candelabra install' | cut -c1-5`.split("\n").each{|id| `kill #{id}` unless Process.pid == id.to_i }
         end

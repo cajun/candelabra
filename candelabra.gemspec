@@ -5,7 +5,7 @@ Gem::Specification.new do |s|
   s.name        = "candelabra"
   s.version     = Candelabra::VERSION
   s.platform    = Gem::Platform::RUBY
-  s.authors     = ['cajun']
+  s.authors     = ['cajun', 'mwoods79', 'lex148']
   s.email       = ['zac@kleinpeter.org']
   s.homepage    = "http://rubygems.org/gems/candelabra"
   s.summary     = "Wrapper for pianobar"
@@ -14,6 +14,7 @@ Gem::Specification.new do |s|
   s.required_rubygems_version = ">= 1.3.6"
   s.rubyforge_project         = "candelabra"
 
+  s.add_dependency "dnssd"  , "~> 1.4"
   s.add_development_dependency "bundler"  , "~> 1.0.0"
   s.add_development_dependency "minitest" , ">= 2.0.2"
 
