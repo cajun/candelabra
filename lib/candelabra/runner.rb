@@ -40,7 +40,7 @@ module Candelabra
       @options ={}
       Candelabra::Configuration.go do |config|
         OptionParser.new( args ) do |opts|
-          opts.banner = banner 
+          opts.banner = banner
 
           opts.on_tail( '-h', '--help', 'Show this message' ) do
             puts opts
